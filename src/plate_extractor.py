@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
+import datetime
+import os
 
-img = cv2.imread('img/car_01.jpg')
+img = cv2.imread('../img/car_01.jpg')
 draw = img.copy()
 rows, cols = img.shape[:2]
 
@@ -15,6 +17,35 @@ def onMouse(event, x, y, flags, param):
         cv2.imshow("License Plate Extractor", draw)
         pts[pts_cnt] = [x,y]
         pts_cnt += 1
+
+        if pts_cnt == 4:
+            pts1 = np.array(pts, dtype=np.float32)
+            
+            sm = pts.sum(axis=1)                
+            diff = np.diff(pts, axis=1) 
+
+            topLeft = pts[np.argmin(sm)]
+            bottomRight = pts[np.argmax(sm)]
+            topRight = pts[np.argmin(diff)]
+            bottomLeft = pts[np.argmax(diff)]
+
+            pts1 = np.array([topLeft, topRight, bottomLeft, bottomRight], dtype=np.float32)
+
+            width, height = 300, 150
+            pts2 = np.array([[0,0], [width,0], [0,height], [width,height]], dtype=np.float32)
+
+            mtrx = cv2.getPerspectiveTransform(pts1, pts2)
+            result = cv2.warpPerspective(img, mtrx, (width, height))
+
+            now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+            output_dir = r'C:\Users\405\project\opencv_tutorial\04_opencv\extracted_plates'
+            filename = f"plate_{now}.jpg"
+            filepath = os.path.join(output_dir, filename)
+            cv2.imwrite(filepath, result)
+
+ 
+
+    
 
 
 
