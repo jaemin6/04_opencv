@@ -22,7 +22,7 @@ def onMouse(event, x, y, flags, param):   # x, y는 마우스 커서 좌표
     global pts_cnt, pts, current_img_index, img, draw, rows, cols
      # 마우스 이벤트 발생 했을 때만 실행
     if event == cv2.EVENT_LBUTTONDOWN:
-        cv2.circle(draw, (x,y), 10, (0,255,255), -1)    # 반지름 크기 설정 노란색 원 설정
+        cv2.circle(draw, (x,y), 3, (0,255,255), -1)    # 반지름 크기 설정 노란색 원 설정
         cv2.imshow("License Plate Extractor", draw)     # 실시간 클릭 위치 표시
         pts[pts_cnt] = [x,y]
         pts_cnt += 1                             # 클릭한 좌표 저장, 다음 좌표 저장 준비
