@@ -39,7 +39,7 @@ def onMouse(event, x, y, flags, param):
 
             now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
             output_dir = r'C:\Users\405\project\opencv_tutorial\04_opencv\extracted_plates'
-            filename = f"plate_{now}.jpg"
+            filename = f"plate_{now}.png"
             filepath = os.path.join(output_dir, filename)
             cv2.imwrite(filepath, result)
 
