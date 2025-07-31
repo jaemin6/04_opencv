@@ -11,7 +11,7 @@ pts_cnt = 0
 pts = np.zeros((4,2), dtype=np.float32)
 
 def onMouse(event, x, y, flags, param):
-    global pts_cnt
+    global pts_cnt, pts
     if event == cv2.EVENT_LBUTTONDOWN:
         cv2.circle(draw, (x,y), 10, (0,255,255), -1)
         cv2.imshow("License Plate Extractor", draw)
@@ -29,10 +29,10 @@ def onMouse(event, x, y, flags, param):
             topRight = pts[np.argmin(diff)]
             bottomLeft = pts[np.argmax(diff)]
 
-            pts1 = np.array([topLeft, topRight, bottomLeft, bottomRight], dtype=np.float32)
+            pts1 = np.array([topLeft, topRight, bottomRight, bottomLeft], dtype=np.float32)
 
             width, height = 300, 150
-            pts2 = np.array([[0,0], [width,0], [0,height], [width,height]], dtype=np.float32)
+            pts2 = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
 
             mtrx = cv2.getPerspectiveTransform(pts1, pts2)
             result = cv2.warpPerspective(img, mtrx, (width, height))
@@ -42,6 +42,11 @@ def onMouse(event, x, y, flags, param):
             filename = f"plate_{now}.png"
             filepath = os.path.join(output_dir, filename)
             cv2.imwrite(filepath, result)
+
+            pts_cnt = 0
+            pts = np.zeros((4, 2), dtype=np.float32)
+            draw[:] = img.copy()
+            cv2.imshow("License Plate Extractor", draw)
 
  
 
