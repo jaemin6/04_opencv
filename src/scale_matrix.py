@@ -2,9 +2,9 @@ import cv2
 import numpy as np
 
 img = cv2.imread('../img/fish.jpg')
-height, width = img.shape[:2]
+height, width = img.shape[:2]   # 높이, 너비, 채널 수 그중 앞 2개만 가져옴
 
-# 0.5배 축소 변환 행렬
+# 0.5배 축소 변환 행렬, 전체 이미지가 반으로 줄어듦
 m_small = np.float32([[0.5, 0, 0],
                        [0, 0.5,0]])  
 # 2배 확대 변환 행렬
