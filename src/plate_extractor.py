@@ -57,13 +57,16 @@ def onMouse(event, x, y, flags, param):
 
             ##  가우시안 블러 적용 (번호판 추출 후)
             result_blurred = cv2.GaussianBlur(result_gray, (5, 5), 0)  # 커널 사이즈 5x5, 표준편차 자동
-
+            
+            ## 컨투어 효과 추가
             thresh_adaptive = cv2.adaptiveThreshold(result_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                         cv2.THRESH_BINARY_INV, 11, 2)
             contours, _ = cv2.findContours(thresh_adaptive, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             contour_result = cv2.cvtColor(result_gray, cv2.COLOR_GRAY2BGR)
+            # 출력시 컨투어 효과 따로 보여줌
             cv2.drawContours(contour_result, contours, -1, (0,255,0), 2)
             cv2.imshow('Contours on Plate', contour_result)
+
             # 파일 이름 생성
             now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
             filename = f"plate_{now}.png"
