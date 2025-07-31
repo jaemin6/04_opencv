@@ -3,15 +3,23 @@ import numpy as np
 import datetime
 import os
 
-img = cv2.imread('../img/car_01.jpg')
+image_files = [f"../img/car_0{i}.jpg" for i in range(1, 8)]
+current_img_index = 0
+
+img = cv2.imread(image_files[current_img_index])
 draw = img.copy()
 rows, cols = img.shape[:2]
 
 pts_cnt = 0
 pts = np.zeros((4,2), dtype=np.float32)
 
+output_dir = r'C:\Users\405\project\opencv_tutorial\04_opencv\extracted_plates'
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
 def onMouse(event, x, y, flags, param):
-    global pts_cnt, pts
+    global pts_cnt, pts, current_img_index, img, draw, rows, cols
+
     if event == cv2.EVENT_LBUTTONDOWN:
         cv2.circle(draw, (x,y), 10, (0,255,255), -1)
         cv2.imshow("License Plate Extractor", draw)
@@ -36,7 +44,6 @@ def onMouse(event, x, y, flags, param):
             result = cv2.warpPerspective(img, mtrx, (width, height))
 
             now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-            output_dir = r'C:\Users\405\project\opencv_tutorial\04_opencv\extracted_plates'
             filename = f"plate_{now}.png"
             filepath = os.path.join(output_dir, filename)
 
@@ -48,9 +55,19 @@ def onMouse(event, x, y, flags, param):
             else:
                 print("저장 실패!")
 
+            # 초기화 및 다음 이미지 로드
             pts_cnt = 0
             pts = np.zeros((4, 2), dtype=np.float32)
-            draw[:] = img.copy()
+
+            current_img_index += 1
+            if current_img_index >= len(image_files):
+                print("이미지 처리 완료")
+                cv2.destroyAllWindows()
+                return
+
+            img = cv2.imread(image_files[current_img_index])
+            draw = img.copy()
+            rows, cols = img.shape[:2]
             cv2.imshow("License Plate Extractor", draw)
 
 cv2.imshow("License Plate Extractor", img)
