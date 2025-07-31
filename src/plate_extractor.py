@@ -56,7 +56,7 @@ def onMouse(event, x, y, flags, param):
             result_gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
 
             ##  가우시안 블러 적용 (번호판 추출 후)
-            result_blurred = cv2.GaussianBlur(result, (5, 5), 0)  # 커널 사이즈 5x5, 표준편차 자동
+            result_blurred = cv2.GaussianBlur(result_gray, (5, 5), 0)  # 커널 사이즈 5x5, 표준편차 자동
 
             # 파일 이름 생성
             now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
