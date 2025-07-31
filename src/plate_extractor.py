@@ -19,8 +19,6 @@ def onMouse(event, x, y, flags, param):
         pts_cnt += 1
 
         if pts_cnt == 4:
-            pts1 = np.array(pts, dtype=np.float32)
-            
             sm = pts.sum(axis=1)                
             diff = np.diff(pts, axis=1) 
 
@@ -41,21 +39,19 @@ def onMouse(event, x, y, flags, param):
             output_dir = r'C:\Users\405\project\opencv_tutorial\04_opencv\extracted_plates'
             filename = f"plate_{now}.png"
             filepath = os.path.join(output_dir, filename)
-            cv2.imwrite(filepath, result)
+
+            success = cv2.imwrite(filepath, result)
+
+            if success:
+                print(f"번호판 저장 완료: {filename}")
+                cv2.imshow('Extracted Plate', result)
+            else:
+                print("저장 실패!")
 
             pts_cnt = 0
             pts = np.zeros((4, 2), dtype=np.float32)
             draw[:] = img.copy()
             cv2.imshow("License Plate Extractor", draw)
-
- 
-
-    
-
-
-
-
-
 
 cv2.imshow("License Plate Extractor", img)
 cv2.setMouseCallback("License Plate Extractor", onMouse)
