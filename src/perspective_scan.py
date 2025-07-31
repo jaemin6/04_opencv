@@ -41,7 +41,7 @@ def onMouse(event, x, y, flags, param):
            
             mtrx = cv2.getPerspectiveTransform(pts1, pts2)
         
-            result = cv2.warpPerspective(img, mtrx, (width, height))
+            result = cv2.warpPerspective(img, mtrx, (int(width), int(height)))
             cv2.imshow('scanned', result)
 cv2.imshow(win_name, img)
 cv2.setMouseCallback(win_name, onMouse)    
